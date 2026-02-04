@@ -27,6 +27,14 @@ mongoose
   .catch((err) => console.error("❌ MongoDB error:", err));
 
 /* Route */
+
+app.get("/", (req, res) => {
+  res.json({
+    message: "Video KYC API is running",
+    status: "OK"
+  });
+});
+
 app.post("/upload", upload.single("video"), videoController.processVideo);
 
 /* Start */
