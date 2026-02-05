@@ -21,9 +21,11 @@ exports.extractUserData = (text) => {
             return digitMap[digit] ? digitMap[digit] + digitMap[digit] + digitMap[digit] : match;
         });
 
-    const digitsOnly = phoneText.replace(/[^0-9]/g, " ");
-    // Accept 8-12 digit phone numbers (flexible for partial transcriptions)
-    const phoneMatch = digitsOnly.match(/\b\d{8,12}\b/);
+    // Clean text: keep only digits to join parts like "961-456-268"
+    const digitsOnlyJoined = phoneText.replace(/[^0-9]/g, "");
+
+    // Look for a 8-12 digit block in the joined string
+    const phoneMatch = digitsOnlyJoined.match(/\d{8,12}/);
 
     /* ---------- NAME ---------- */
     let name = null;
