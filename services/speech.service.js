@@ -8,7 +8,9 @@ exports.speechToText = (audioPath) => {
         const baseName = path.basename(audioPath, ".wav");
         const txtPath = path.join(dir, `${baseName}.txt`);
 
-        const command = `whisper "${audioPath}" --model base --language en --output_format txt --output_dir "${dir}"`;
+        // Use full path to whisper (pipx installs to ~/.local/bin)
+        const whisperPath = "/root/.local/bin/whisper";
+        const command = `"${whisperPath}" "${audioPath}" --model base --language en --output_format txt --output_dir "${dir}"`;
 
         console.log("▶ Running Whisper:", command);
 
