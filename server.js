@@ -3,10 +3,19 @@ const express = require("express");
 const multer = require("multer");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const fs = require("fs");
+const path = require("path");
 
 const videoController = require("./controllers/video.controller");
 
 const app = express();
+
+// Ensure uploads directory exists
+const uploadDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 const upload = multer({
   dest: "uploads/",
   limits: { fileSize: 100 * 1024 * 1024 }, // 100MB

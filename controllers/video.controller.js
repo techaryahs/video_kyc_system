@@ -18,10 +18,10 @@ exports.processVideo = async (req, res) => {
             return res.status(400).json({ error: "No file uploaded" });
         }
 
-        const inputPath = req.file.path;
+        const inputPath = path.isAbsolute(req.file.path) ? req.file.path : path.join(__dirname, "..", req.file.path);
         const audioPath = `${inputPath}.wav`;
 
-        console.log("📥 File received:", inputPath);
+        console.log("📥 File received (Target Path):", inputPath);
 
         // 1️⃣ Extract audio from video / audio file
         console.log("🎬 Starting audio extraction...");

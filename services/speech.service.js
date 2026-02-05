@@ -14,15 +14,20 @@ exports.speechToText = (audioPath) => {
 
         exec(command, (error, stdout, stderr) => {
             if (error) {
-                console.error("❌ Whisper error:", stderr);
-                return reject(error);
+                console.error("❌ Whisper execution failed:");
+                console.error("❌ Error Message:", error.message);
+                console.error("❌ Stderr:", stderr);
+                console.error("❌ Stdout:", stdout);
+                return reject(new Error(`Whisper failed: ${error.message}`));
             }
 
             if (!fs.existsSync(txtPath)) {
+                console.error("❌ Whisper output file missing:", txtPath);
                 return reject(new Error("Whisper output text file not found"));
             }
 
             const text = fs.readFileSync(txtPath, "utf8").trim();
+            console.log("✅ Whisper transcription complete");
             resolve(text);
         });
     });
