@@ -2,8 +2,28 @@ exports.extractUserData = (text) => {
     const lower = text.toLowerCase();
 
     /* ---------- PHONE ---------- */
-    const digitsOnly = text.replace(/[^0-9]/g, " ");
-    const phoneMatch = digitsOnly.match(/\b\d{10}\b/);
+    // Convert common speech patterns to digits
+    let phoneText = text.toLowerCase()
+        .replace(/double zero/g, '00')
+        .replace(/triple zero/g, '000')
+        .replace(/double (\w+)/g, (match, digit) => {
+            const digitMap = {
+                'one': '1', 'two': '2', 'three': '3', 'four': '4', 'five': '5',
+                'six': '6', 'seven': '7', 'eight': '8', 'nine': '9', 'zero': '0'
+            };
+            return digitMap[digit] ? digitMap[digit] + digitMap[digit] : match;
+        })
+        .replace(/triple (\w+)/g, (match, digit) => {
+            const digitMap = {
+                'one': '1', 'two': '2', 'three': '3', 'four': '4', 'five': '5',
+                'six': '6', 'seven': '7', 'eight': '8', 'nine': '9', 'zero': '0'
+            };
+            return digitMap[digit] ? digitMap[digit] + digitMap[digit] + digitMap[digit] : match;
+        });
+
+    const digitsOnly = phoneText.replace(/[^0-9]/g, " ");
+    // Accept 8-12 digit phone numbers (flexible for partial transcriptions)
+    const phoneMatch = digitsOnly.match(/\b\d{8,12}\b/);
 
     /* ---------- NAME ---------- */
     let name = null;
