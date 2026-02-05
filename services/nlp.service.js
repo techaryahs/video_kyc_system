@@ -24,9 +24,11 @@ exports.extractUserData = (text) => {
     /* ---------- ADDRESS ---------- */
     let address = null;
     const addressPatterns = [
-        /my address is (.*)/i,
-        /i live in (.*)/i,
-        /address is (.*)/i
+        // Improved: Allow letters, numbers, spaces, commas, periods, hyphens
+        // Stop before keywords like "and my", "phone", or end of text
+        /my address is ([a-zA-Z0-9\s,.-]+?)(?=\s*(?:and my|and|my phone|phone number|phone|for verification|$))/i,
+        /i live in ([a-zA-Z0-9\s,.-]+?)(?=\s*(?:and my|and|my phone|phone number|phone|for verification|$))/i,
+        /address is ([a-zA-Z0-9\s,.-]+?)(?=\s*(?:and my|and|my phone|phone number|phone|for verification|$))/i
     ];
 
     for (const pattern of addressPatterns) {
