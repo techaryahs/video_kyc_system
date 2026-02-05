@@ -26,7 +26,8 @@ exports.extractUserData = (text) => {
     let address = null;
     const addrMatch = text.match(/(?:live in|address is|from|staying at|location is)\s+([a-z0-9\s,.-]+?)(?=\s*(?:and my|my phone|phone number|for verification|\.)|$)/i);
     if (addrMatch) {
-        address = addrMatch[1].trim();
+        // Replace newlines with spaces for cleaner output
+        address = addrMatch[1].trim().replace(/\s+/g, ' ');
     }
 
     return {
